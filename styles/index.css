@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css?family=Muli:300,400,800&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 62.5%;
+    font-family: 'Muli', sans-serif;
+    background-color: rgb(241, 241, 241);
+    height: 100%;
+}
+
+#main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: calc(100vh - 40px);
+}
+
+/* Title Bar */
+#title-bar {
+    display: flex;
+    text-align: center;
+    width: 100vw;
+    height: 40px;
+    background-color: rgb(0, 64, 107);
+    color: rgba(250,250,250,.95);
+}
+
+#title-bar h1 {
+    font-size: 1.35rem;
+    font-weight: 400;
+    width: 100%;
+    align-self: center;
+}
+
+
+/* Table */
+table, td, th {
+    border: 1px solid #999;
+    border-collapse: collapse;
+}
+
+table {
+    width: 90vw;
+}
+
+th {
+    font-size: .8rem;
+    font-weight: 800;
+    padding: 16px 20px;
+    border-bottom: 2px solid #999;
+    background-color: rgba(0, 64, 107, .2);
+}
+
+td {
+    font-size: .7rem;
+    font-weight: 400;
+    text-align: center;
+    padding: 10px 20px;
+}
