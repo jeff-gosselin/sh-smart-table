@@ -1,5 +1,5 @@
 
-// The t
+// The data to populate the table
 let tableData = [
     {productID: 3456, brand: "Nike", category: "Sneakers", sales: 124, comment: "Very comfortable."},
     {productID: 2547, brand: "Apple", category: "Electronics", sales: 267, comment: ""},

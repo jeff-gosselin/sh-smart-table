@@ -1,7 +1,15 @@
 import tableData from './tableData.js'; // Imports the data for the table
 
+// Store a copy of the imported data into an mutable variable
+let theData = [...tableData];
+
 // Take imported data and create a table
-renderTable(tableData);
+
+renderTableHeaders(theData);
+renderTableBody(theData);
+
+// Initializes the direction of the sorted column
+let sortState = false;
 
 // Add eventListeners to all column header sort and filter icons
 addEventListenersForSortAndFilter();
@@ -18,20 +26,17 @@ function addEventListenersForSortAndFilter() {
     }
 }
 
-
-function renderTable(data) {
-    const thead = document.querySelector('#main-container thead');
-    const tbody = document.querySelector('#main-container tbody');
+// Create table column headers
+function renderTableHeaders(data) { 
     const trHead = document.createElement('tr');
-   
-    console.log(thead, tbody);
-    // Create table column headers
+    const thead = document.querySelector('#main-container thead');
     const colHeaders = Object.keys(data[0]);
+
     for (let i = 0; i < colHeaders.length; i++) {
         trHead.innerHTML += `
             <th data-id="${colHeaders[i]}">
                 <div class="options"></div>
-                <div>
+                <div class="column-label" data-id="${colHeaders[i]}">
                     <span class="col-header">${colHeaders[i]}</span>
                     <div>
                         <i style="display: none" data-id="${colHeaders[i]}" class="material-icons">swap_vert</i>
@@ -40,12 +45,21 @@ function renderTable(data) {
                 </div>
             </th>`;
     }
-    thead.appendChild(trHead);
 
-    // Add click fuctionality to headers so when clicked options window appears
+    // Add click fuctionality to headers (when clicked options window appears)
     let headers = trHead.querySelectorAll('th');
+    let colLabels = document.querySelectorAll('.column-label');
     headers.forEach(e => e.addEventListener('click', (e) => showOptions(e.target.dataset.id)));
+    colLabels.forEach(e => e.addEventListener('click', (e) => showOptions(e.target.dataset.id)));
 
+    thead.appendChild(trHead);
+}
+
+function renderTableBody(data) {
+    const tbody = document.querySelector('#main-container tbody');
+    
+    tbody.innerHTML = '';
+   
     // Create the rest of the rows in the table body
     for (let i = 0; i < data.length; i++) { 
         let trBody = document.createElement('tr');
@@ -54,13 +68,11 @@ function renderTable(data) {
         }
         tbody.appendChild(trBody);
     }   
-
 }
 
-
-
+// Shows or hides the Options window that allows you to change the type of column (Sortable, Filterable, Sortable and Filterable, none)
 function showOptions(id) { 
-    const options = document.querySelector(`[data-id="${id}"] .options`);
+    const options = document.querySelector(`[data-id="${id}"] > .options`);
     options.innerHTML = `
         <div>
             <button data-id="${id}" class="col-btn">Sortable</button>    
@@ -75,6 +87,7 @@ function showOptions(id) {
     btns[1].addEventListener('click', (e) => toggleFilter(e));
 }
 
+// Shows or hides the sort icon for a specific column
 function toggleSort(e) {
     const sortBtn = document.querySelectorAll(`i[data-id="${e.target.dataset.id}"]`)[0];
     if (sortBtn.style.display === 'none') {
@@ -84,6 +97,7 @@ function toggleSort(e) {
     }
 }
 
+// Shows or hides the filter icon for a specific column
 function toggleFilter(e) {
     const filterBtn = document.querySelectorAll(`i[data-id="${e.target.dataset.id}"]`)[1];
     if (filterBtn.style.display === 'none') {
@@ -93,15 +107,36 @@ function toggleFilter(e) {
     }
 }
 
-function sortColumn(columnName) {
+// Sorts the column data for either number values or string values
+function sortColumn(columnLabel) {
     // find out the type of data in the column to choose a sort method
-    let typeOfData = typeof tableData[0][columnName];
+    let typeOfData = typeof theData[0][columnLabel];
     console.log(typeOfData);
 
     // switch the direction of the sort
-    
+    sortState = !sortState;
+
+    // Execute the sort
+    if (typeOfData === 'number') {
+        theData = theData.sort((a,b) => {
+            return sortState ? a[columnLabel] - b[columnLabel] : b[columnLabel] - a[columnLabel];
+        })
+    }
+
+    if (typeOfData === 'string') {
+        theData = tableData.sort((a,b) => {
+            if (a[columnLabel] > b[columnLabel]) {
+                return sortState ? 1 : -1;
+            } else {
+                return sortState ? -1 : 1;
+            }
+        });
+    }
+
+    renderTableBody(theData);
 }
 
+// Filters the column data
 function filterColumn(columnName) {
     console.log("filtered!", columnName);
 }

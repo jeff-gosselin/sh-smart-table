@@ -62,6 +62,7 @@ th:hover {
     background-color: rgba(0, 64, 107, .375);
 }
 
+/* Options window for toggling if a column is sortable or filterable */
 .options {
     width: calc(100% + 2px);
     height: 30px;
@@ -75,7 +76,7 @@ th:hover {
 }
 
 .options > div {
-    padding: 0 8px;
+    padding: 0 2px;
 }
 
 .options > div button {
@@ -89,7 +90,6 @@ th:hover {
 }
 
 .options > div button:active {
-
     box-shadow: none;
 }
 
