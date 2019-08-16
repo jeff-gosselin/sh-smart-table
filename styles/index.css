@@ -50,11 +50,41 @@ table {
 }
 
 th {
-    font-size: .8rem;
+    position: relative;
+    font-size: .85rem;
     font-weight: 800;
     padding: 16px 20px;
     border-bottom: 2px solid #999;
     background-color: rgba(0, 64, 107, .2);
+}
+
+th:hover {
+    background-color: rgba(0, 64, 107, .375);
+}
+
+.options {
+    width: calc(100% + 2px);
+    height: 30px;
+    position: absolute;
+    left: -1px;
+    top: -36px;
+    background-color: rgba(0, 64, 107, .1);
+    border: 1px solid #aaa;
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+th div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col-header {
+    padding: 0 12px;
 }
 
 td {
@@ -63,3 +93,14 @@ td {
     text-align: center;
     padding: 10px 20px;
 }
+
+.material-icons {
+    font-size: 24px;
+    color: rgba(0, 64, 107, .5);
+}
+
+.material-icons:hover {
+    color: rgba(0, 64, 107, .75);
+    cursor: pointer;
+}
+
