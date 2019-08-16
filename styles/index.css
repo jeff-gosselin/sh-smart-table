@@ -14,6 +14,7 @@ body {
 }
 
 #main-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +40,7 @@ body {
 }
 
 
-/* Table */
+/***** Table *****/
 table, td, th {
     border: 1px solid #999;
     border-collapse: collapse;
@@ -55,7 +56,7 @@ th {
     font-weight: 800;
     padding: 16px 20px;
     border-bottom: 2px solid #999;
-    background-color: rgba(0, 64, 107, .2);
+    background-color: rgba(0, 64, 107, .3);
 }
 
 th:hover {
@@ -64,6 +65,8 @@ th:hover {
 
 /* Options window for toggling if a column is sortable or filterable */
 .options {
+    display: flex;
+    align-items: center;
     width: calc(100% + 2px);
     height: 30px;
     position: absolute;
@@ -72,11 +75,12 @@ th:hover {
     background-color: rgba(0, 64, 107, .05);
     border: 1px solid #bbb;
     border-radius: 8px 8px 0 0;
-    opacity: 0;
+    display: none;
 }
 
 .options > div {
-    padding: 0 2px;
+    display: inline-block;
+    padding: 4px 2px 0px 2px;
 }
 
 .options > div button {
@@ -94,7 +98,7 @@ th:hover {
 }
 
 .show {
-    opacity: 1;
+    display: block !important;
 }
 
 th div {
@@ -125,3 +129,71 @@ td {
     cursor: pointer;
 }
 
+/***** END of Table *****/
+
+/* Filter Menu Popup */
+.menu {
+    position: absolute;
+    text-align: center;
+    padding: 0 20px 10px 20px;
+    background-color: rgb(0, 89, 148);
+}
+
+.menu h1 {
+    color: rgba(250,250,250,.9);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 10px;
+    width: 100%;
+    border-bottom: 1px solid rgba(250,250,250,.2);
+}
+
+.menu input {
+    margin: 10px 0;
+}
+
+.menu span {
+    color: #fff;
+    font-size: .7rem;
+    font-weight: 300;
+    padding: 0 6px;
+}
+
+.checklist {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+.checklist-btns {
+    margin: 18px 0;
+    align-self: center;
+}
+
+.checklist-btns > button {
+    padding: 6px 16px;
+    font-size: .75rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+#cancel {
+    border: none;
+    background-color: transparent;
+}
+
+#apply {
+    border: none;
+    border-radius: 4px;
+    text-shadow: 1px 1px 2px rgba(0,0,0, .2);
+    box-shadow: 2px 2px 2px rgba(0,0,0, .2);
+    background-color: rgba(255, 255, 255, .3);
+}
+
+#cancel:hover, #apply:hover {
+    cursor: pointer;
+}
+
+#apply:hover {
+    background-color: rgba(255, 255, 255, .4);
+}

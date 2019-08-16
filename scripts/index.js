@@ -21,7 +21,7 @@ function addEventListenersForSortAndFilter() {
         if (icon.innerText === 'swap_vert') {
             icon.addEventListener('click', () => sortColumn(icon.dataset.id));
         } else {
-            icon.addEventListener('click', () => filterColumn(icon.dataset.id));
+            icon.addEventListener('click', () => filterColumnMenu(icon.dataset.id));
         }
     }
 }
@@ -116,13 +116,14 @@ function sortColumn(columnLabel) {
     // switch the direction of the sort
     sortState = !sortState;
 
-    // Execute the sort
+    // Execute the sort if a number
     if (typeOfData === 'number') {
         theData = theData.sort((a,b) => {
             return sortState ? a[columnLabel] - b[columnLabel] : b[columnLabel] - a[columnLabel];
         })
     }
 
+    // Execute the sort if a string
     if (typeOfData === 'string') {
         theData = tableData.sort((a,b) => {
             if (a[columnLabel] > b[columnLabel]) {
@@ -133,10 +134,48 @@ function sortColumn(columnLabel) {
         });
     }
 
+    // Render the sorted body of the table
     renderTableBody(theData);
 }
 
-// Filters the column data
+// Renders the Filter Menu with the column data
+function filterColumnMenu(columnLabel) {
+    let main = document.querySelector('#main-container');
+    let filterMenu = document.createElement('div');
+    let checklist = document.createElement('div');
+    let h1 = document.createElement('h1');
+    
+    filterMenu.className = 'menu';
+    checklist.className = 'checklist';
+    h1.innerText = 'Filter Column';
+    filterMenu.appendChild(h1);
+    checklist.innerHTML = `<div><input id="all" type="checkbox" name="filter" checked><span>Select All</span></div>`;
+    
+
+    for (let row of theData) {
+        if (row[columnLabel] !== '') {
+            checklist.innerHTML += `<div><input type="checkbox" name="filter"><span>${row[columnLabel]}</span></div>`;
+        }    
+    }
+
+    checklist.innerHTML += `
+        <div class="checklist-btns">
+            <button id="cancel">Cancel</button>
+            <button id="apply">Apply</button>
+        </div>
+        `;
+    
+    filterMenu.appendChild(checklist);
+    main.appendChild(filterMenu);
+
+    let cancel = document.querySelector('#cancel');
+    cancel.addEventListener('click', () => {
+        filterMenu.style.display = 'none';
+        filterMenu.innerHTML = '';
+    });
+    
+}
+
 function filterColumn(columnName) {
     console.log("filtered!", columnName);
 }
