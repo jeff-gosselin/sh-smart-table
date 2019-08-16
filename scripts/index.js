@@ -20,8 +20,8 @@ const renderTable = (data) => {
                 <div>
                     <span class="col-header">${colHeaders[i]}</span>
                     <div>
-                        <i class="material-icons">swap_vert</i>
-                        <i class="material-icons">filter_list</i>
+                        <i style="display: none" data-id="header-${i+1}" class="material-icons">swap_vert</i>
+                        <i style="display: none" data-id="header-${i+1}" class="material-icons">filter_list</i>
                     </div>
                 </div>
             </th>`;
@@ -47,9 +47,35 @@ renderTable(tableData);
 
 function showOptions(id) { 
     const options = document.querySelector(`[data-id="${id}"] .options`);
-    // options.innerHTML = `
-    //     <div></div>
-    
-    // `;
+    options.innerHTML = `
+        <div>
+            <button data-id="${id}" class="col-btn">Sortable</button>    
+        </div>
+        <div>
+            <button data-id="${id}" class="col-btn">Filterable</button> 
+        </div>
+    `;
     options.classList.toggle('show');
+    let btns = options.querySelectorAll('button');
+    btns[0].addEventListener('click', (e) => toggleSort(e));
+    btns[1].addEventListener('click', (e) => toggleFilter(e));
+    // console.log(btns[0]);
+}
+
+function toggleSort(e) {
+    const sortBtn = document.querySelectorAll(`i[data-id="${e.target.dataset.id}"]`)[0];
+    if (sortBtn.style.display === 'none') {
+        sortBtn.style.display = 'block';
+    } else {
+        sortBtn.style.display = 'none';
+    }
+}
+
+function toggleFilter(e) {
+    const filterBtn = document.querySelectorAll(`i[data-id="${e.target.dataset.id}"]`)[1];
+    if (filterBtn.style.display === 'none') {
+        filterBtn.style.display = 'block';
+    } else {
+        filterBtn.style.display = 'none';
+    }
 }
