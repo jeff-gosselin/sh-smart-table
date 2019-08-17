@@ -3,8 +3,18 @@ import tableData from './tableData.js'; // Imports the data for the table
 // Store a copy of the imported data into an mutable variable
 let theData = [...tableData];
 
-// Take imported data and create a table
+// Creates functionality for Add/Delete Row and Add/Delete Column buttons
+const rowPlus = document.getElementById('row-plus');
+const rowMinus = document.getElementById('row-minus');
+const colPlus = document.getElementById('col-plus');
+const colMinus = document.getElementById('col-minus');
 
+rowPlus.addEventListener('click', () => addRowMenu());
+rowMinus.addEventListener('click', () => deleteRowMenu());
+colPlus.addEventListener('click', () => addColumnMenu());
+colMinus.addEventListener('click', () => deleteColumnMenu());
+
+// Take imported data and create a table
 renderTableHeaders(theData);
 renderTableBody(theData);
 
@@ -161,8 +171,8 @@ function filterColumnMenu(columnLabel) {
 
     checklist.innerHTML += `
         <div class="checklist-btns">
-            <button id="cancel">Cancel</button>
-            <button id="apply">Apply</button>
+            <button class="cancel">Cancel</button>
+            <button class="apply">Apply</button>
         </div>
     `;
     
@@ -173,8 +183,8 @@ function filterColumnMenu(columnLabel) {
     filterMenu.appendChild(checklist);
     main.appendChild(filterMenu);
 
-    let cancel = document.querySelector('#cancel');
-    let apply = document.querySelector('#apply');
+    let cancel = document.querySelector('.cancel');
+    let apply = document.querySelector('.apply');
 
     cancel.addEventListener('click', () => {
         filterMenu.style.display = 'none';
@@ -184,6 +194,7 @@ function filterColumnMenu(columnLabel) {
     apply.addEventListener('click', (e) => filterTable(e, filterMenu));
 }
 
+// Depending on the state of the "Select All" checkbox a particular function is executed
 function selectAllToggle(e) {
     if (e.target.checked) {
         selectAll();
@@ -192,20 +203,23 @@ function selectAllToggle(e) {
     }
 }
 
+// Checks all checkboxes
 function selectAll() {
-    let checkboxes = document.getElementsByName('filter');
+    const checkboxes = document.getElementsByName('filter');
     for (let i = 0; i < checkboxes.length; i++) {
             checkboxes[i].checked = true;
     }
 }	
 
+// Unchecks all checkboxes
 function unSelectAll() {
-    let checkboxes = document.getElementsByName('filter');
+    const checkboxes = document.getElementsByName('filter');
     for (let i = 0; i < checkboxes.length; i++) {
             checkboxes[i].checked = false;
     }
 }		
 
+// Filters the table
 function filterTable(e, filterMenu) {
     e.preventDefault();
     let result = e.target.form;
@@ -221,4 +235,68 @@ function filterTable(e, filterMenu) {
     renderTableBody(newData);    
     filterMenu.style.display = 'none';
     filterMenu.innerHTML = '';
+}
+
+// Add a row 
+function addRowMenu() {
+    let row = {};
+    const modal = document.getElementById('add-row');
+    const form = modal.querySelector('form');
+    const colHeaders = Object.keys(theData[0]);
+
+    for (let i = 0; i < colHeaders.length; i++) {
+        form.innerHTML += `<input type="text" placeholder="${colHeaders[i]}">`
+    }
+
+    form.innerHTML += `
+        <div id="add-row-btns" class="checklist-btns">
+            <button class="cancel">Cancel</button>
+            <button class="apply">Apply</button>
+        </div>
+    `;
+
+    const cancel = document.querySelector('#add-row-btns > .cancel');
+    const apply = document.querySelector('#add-row-btns > .apply');
+
+    cancel.addEventListener('click', () => {
+        modal.style.display = 'none';
+        modal.innerHTML = '';
+    });
+
+    apply.addEventListener('click', (e) => addRow(e, modal, colHeaders));
+
+    modal.style.display = 'block';
+}
+
+function addRow(e, modal, colHeaders) {
+    e.preventDefault()
+    let row = {};
+    let form = e.target.form;
+
+    console.log(form.children);
+    for (let i = 0; i < form.children.length - 1; i++) {
+        if (form.children[i].value === undefined) {
+            row[colHeaders[i]] = "";
+        } else {
+            row[colHeaders[i]] = form.children[i].value;
+        }
+    }
+
+    theData.push(row);
+    renderTableBody(theData);
+
+    modal.style.display = 'none';
+    form.innerHTML = '';
+}
+
+function deleteRow() {
+    console.log("- row")
+}
+
+function addColumn() {
+    console.log("+ column")
+}
+
+function deleteColumn() {
+    console.log("- column")
 }

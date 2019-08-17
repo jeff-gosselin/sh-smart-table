@@ -12,24 +12,26 @@
         </header>
         
         <main id="main-container">
+            <!-- Controls for adding/deleting rows and columns  -->
             <div id="controls">
-                <div class="col">
+                <div class="control">
                     <h2>Row</h2>
                     <div>
-                        <button>+</button>
-                        <button>-</button>
+                        <button id="row-plus">+</button>
+                        <button id="row-minus">-</button>
                     </div>
                 </div>
 
-                <div class="col">
+                <div class="control">
                     <h2>Column</h2>
                     <div>
-                        <button>+</button>
-                        <button>-</button>
+                        <button id="col-plus">+</button>
+                        <button id="col-minus">-</button>
                     </div>
                 </div>
             </div>
 
+            <!-- Data Table -->
             <table>
                 <thead>
 
@@ -38,6 +40,16 @@
 
                 </tbody>
             </table>
+
+            <!-- Modal form for add/delete row and column -->
+            <div id="add-row" class="menu">
+                <h1>Add a Row</h1>
+                <form>
+
+                </form>
+            </div>
+
+            
         </main>
         
         <script src="scripts/index.js" type="module"></script>

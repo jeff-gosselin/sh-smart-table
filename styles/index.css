@@ -17,10 +17,11 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100vw;
     height: calc(100vh - 40px);
+    margin: 50px 0;
 }
 
 /* Title Bar */
@@ -54,6 +55,26 @@ body {
     text-align: center;
     border: 2px solid rgba(0, 64, 107, .1);
     background-color: rgba(0, 64, 107, .05);
+}
+
+.control > div {
+    display: flex;
+    margin-top: 4px;
+}
+
+.control > div > button {
+    font-size: .7rem;
+    padding: 2px 6px;
+}
+
+/* Add/Delete Control Modals */
+#add-row {
+    display: none;
+}
+
+#add-row form {
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -194,12 +215,12 @@ td {
     color: #fff;
 }
 
-#cancel {
+.cancel {
     border: none;
     background-color: transparent;
 }
 
-#apply {
+.apply {
     border: none;
     border-radius: 4px;
     text-shadow: 1px 1px 2px rgba(0,0,0, .2);
@@ -207,10 +228,10 @@ td {
     background-color: rgba(255, 255, 255, .3);
 }
 
-#cancel:hover, #apply:hover {
+.cancel:hover, #apply:hover {
     cursor: pointer;
 }
 
-#apply:hover {
+.apply:hover {
     background-color: rgba(255, 255, 255, .4);
 }
