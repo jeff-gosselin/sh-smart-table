@@ -68,11 +68,11 @@ body {
 }
 
 /* Add/Delete Control Modals */
-#add-row {
+#modal {
     display: none;
 }
 
-#add-row form {
+#modal form {
     display: flex;
     flex-direction: column;
 }

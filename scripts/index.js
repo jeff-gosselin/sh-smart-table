@@ -38,10 +38,16 @@ function addEventListenersForSortAndFilter() {
 
 // Create table column headers
 function renderTableHeaders(data) { 
-    const trHead = document.createElement('tr');
     const thead = document.querySelector('#main-container thead');
+    let trHead = thead.querySelector('tr');
+    console.log(trHead);
+    if (trHead === null) {
+        trHead = document.createElement('tr');
+        console.log("we in");
+    } 
+    
     const colHeaders = Object.keys(data[0]);
-
+    trHead.innerHTML = '';
     for (let i = 0; i < colHeaders.length; i++) {
         trHead.innerHTML += `
             <th data-id="${colHeaders[i]}">
@@ -223,16 +229,16 @@ function unSelectAll() {
 function filterTable(e, filterMenu) {
     e.preventDefault();
     let result = e.target.form;
-    let newData = [];
+    let filteredData = [];
     
     // Removes unchecked rows from the table
     for (let elem of result.children) {
         if (elem.children[0].checked && elem.children[0].id !== 'all') {
-            newData.push(theData[elem.children[0].value]);
+            filteredData.push(theData[elem.children[0].value]);
         } 
     }
   
-    renderTableBody(newData);    
+    renderTableBody(filteredData);    
     filterMenu.style.display = 'none';
     filterMenu.innerHTML = '';
 }
@@ -240,8 +246,9 @@ function filterTable(e, filterMenu) {
 // Add a row 
 function addRowMenu() {
     let row = {};
-    const modal = document.getElementById('add-row');
+    const modal = document.getElementById('modal');
     const form = modal.querySelector('form');
+    form.innerHTML = '';
     const colHeaders = Object.keys(theData[0]);
 
     for (let i = 0; i < colHeaders.length; i++) {
@@ -260,7 +267,7 @@ function addRowMenu() {
 
     cancel.addEventListener('click', () => {
         modal.style.display = 'none';
-        modal.innerHTML = '';
+        form.innerHTML = '';
     });
 
     apply.addEventListener('click', (e) => addRow(e, modal, colHeaders));
@@ -293,9 +300,62 @@ function deleteRow() {
     console.log("- row")
 }
 
-function addColumn() {
-    console.log("+ column")
+function addColumnMenu() {
+    const modal = document.getElementById('modal');
+    const form = modal.querySelector('form');
+    const colHeaders = Object.keys(theData[0]);
+    form.innerHTML = '<input type="text" placeholder="Column Name">';
+
+    for (let i = 0; i < theData.length; i++) {
+        form.innerHTML += `<input type="text" placeholder="For ${colHeaders[0]}: ${theData[i][colHeaders[0]]} Row">`
+    }
+
+    form.innerHTML += `
+        <div id="add-col-btns" class="checklist-btns">
+            <button class="cancel">Cancel</button>
+            <button class="apply">Apply</button>
+        </div>
+    `;
+
+    const cancel = document.querySelector('#add-col-btns > .cancel');
+    const apply = document.querySelector('#add-col-btns > .apply');
+
+    cancel.addEventListener('click', () => {
+        modal.style.display = 'none';
+        form.innerHTML = '';
+    });
+
+    apply.addEventListener('click', (e) => addColumn(e, modal));
+
+    modal.style.display = 'block';
+
 }
+
+function addColumn(e, modal) {
+    console.log(e.target.form);
+    e.preventDefault();
+    let form = e.target.form;
+
+    for (let i = 0; i < form.children.length - 2; i++) {
+        console.log(form.children[i+1].value);
+        if (form.children[0].value === undefined) {
+            return () => {
+                modal.style.display = 'none';
+                form.innerHTML = '';
+            };
+        } else if (form.children[i]) {
+            theData[i][form.children[0].value] = form.children[i+1].value;
+        }
+    }
+
+    console.log(theData);
+    renderTableHeaders(theData);
+    renderTableBody(theData);
+    modal.style.display = 'none';
+    form.innerHTML = '';
+}
+
+
 
 function deleteColumn() {
     console.log("- column")
