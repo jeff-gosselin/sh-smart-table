@@ -247,6 +247,8 @@ function filterTable(e, filterMenu) {
 function addRowMenu() {
     let row = {};
     const modal = document.getElementById('modal');
+    const h1 = modal.querySelector('h1');
+    h1.innerText = 'Add a Row';
     const form = modal.querySelector('form');
     form.innerHTML = '';
     const colHeaders = Object.keys(theData[0]);
@@ -302,6 +304,8 @@ function deleteRow() {
 
 function addColumnMenu() {
     const modal = document.getElementById('modal');
+    const h1 = modal.querySelector('h1');
+    h1.innerText = 'Add a Column';
     const form = modal.querySelector('form');
     const colHeaders = Object.keys(theData[0]);
     form.innerHTML = '<input type="text" placeholder="Column Name">';
@@ -356,7 +360,10 @@ function addColumn(e, modal) {
 }
 
 
+function deleteRowMenu() {
+    console.log("Delete row")
+}
 
-function deleteColumn() {
-    console.log("- column")
+function deleteColumnMenu() {
+    console.log("Delete column")
 }
