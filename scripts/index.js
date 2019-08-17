@@ -142,7 +142,7 @@ function sortColumn(columnLabel) {
 function filterColumnMenu(columnLabel) {
     let main = document.querySelector('#main-container');
     let filterMenu = document.createElement('div');
-    let checklist = document.createElement('div');
+    let checklist = document.createElement('form');
     let h1 = document.createElement('h1');
     
     filterMenu.className = 'menu';
@@ -152,30 +152,73 @@ function filterColumnMenu(columnLabel) {
     checklist.innerHTML = `<div><input id="all" type="checkbox" name="filter" checked><span>Select All</span></div>`;
     
 
-    for (let row of theData) {
-        if (row[columnLabel] !== '') {
-            checklist.innerHTML += `<div><input type="checkbox" name="filter"><span>${row[columnLabel]}</span></div>`;
+    for (let i = 0; i <  theData.length; i++) {
+        if (theData[i][columnLabel] !== '') {
+            checklist.innerHTML += `<div><input type="checkbox" name="filter" value="${i}" checked><span>${theData[i][columnLabel]}</span></div>`;
         }    
     }
+
 
     checklist.innerHTML += `
         <div class="checklist-btns">
             <button id="cancel">Cancel</button>
             <button id="apply">Apply</button>
         </div>
-        `;
+    `;
     
+    // Select All checkbox functionality
+    let selectAll = checklist.querySelector('#all');
+    selectAll.addEventListener('click', (e) => selectAllToggle(e));
+
     filterMenu.appendChild(checklist);
     main.appendChild(filterMenu);
 
     let cancel = document.querySelector('#cancel');
+    let apply = document.querySelector('#apply');
+
     cancel.addEventListener('click', () => {
         filterMenu.style.display = 'none';
         filterMenu.innerHTML = '';
     });
-    
+
+    apply.addEventListener('click', (e) => filterTable(e, filterMenu));
 }
 
-function filterColumn(columnName) {
-    console.log("filtered!", columnName);
+function selectAllToggle(e) {
+    if (e.target.checked) {
+        selectAll();
+    } else {
+        unSelectAll();
+    }
+}
+
+function selectAll() {
+    let checkboxes = document.getElementsByName('filter');
+    for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = true;
+    }
+}	
+
+function unSelectAll() {
+    let checkboxes = document.getElementsByName('filter');
+    for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = false;
+    }
+}		
+
+function filterTable(e, filterMenu) {
+    e.preventDefault();
+    let result = e.target.form;
+    let newData = [];
+    
+    // Removes unchecked rows from the table
+    for (let elem of result.children) {
+        if (elem.children[0].checked && elem.children[0].id !== 'all') {
+            newData.push(theData[elem.children[0].value]);
+        } 
+    }
+  
+    renderTableBody(newData);    
+    filterMenu.style.display = 'none';
+    filterMenu.innerHTML = '';
 }
